@@ -53,6 +53,10 @@ body {
  animation-name: fadeIn;
 }
 
+.font-montserrat {
+ font-family: var(--font-montserrat-alternates), sans-serif;
+}
+
 .btn-primary {
  @apply bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded transition-all;
 }
