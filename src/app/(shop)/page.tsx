@@ -1,7 +1,9 @@
-export default function ShopPage() {
+import { Title } from "@/components";
+
+export default function Home() {
  return (
-  <div>
-   <h1>Shop page</h1>
-  </div>
+  <>
+   <Title title="Tienda" subtitle="Todos los productos" className="mb-2" />
+  </>
  );
 }
