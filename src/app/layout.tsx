@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { inter, titleFont } from "@/config/fonts";
+import { inter } from "@/config/fonts";
 
 import "./globals.css";
 
@@ -11,11 +11,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
  return (
-  <html
-   lang="en"
-   className={`${inter.variable}  ${titleFont.variable} h-full antialiased`}
-  >
-   <body className="min-h-full flex flex-col">{children}</body>
+  <html>
+   <body className={inter.className}>{children}</body>
   </html>
  );
 }

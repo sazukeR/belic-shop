@@ -1,4 +1,4 @@
-import TopMenu from "@/components/ui/top-menu/TopMenu";
+import { TopMenu } from "@/components";
 
 export default function ShopLayout({
  children,
@@ -6,7 +6,7 @@ export default function ShopLayout({
  children: React.ReactNode;
 }) {
  return (
-  <main className="min-h-screen ">
+  <main className="min-h-screen">
    <TopMenu />
 
    <div className="px-5 md:px-10">{children}</div>
