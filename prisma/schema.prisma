@@ -23,7 +23,7 @@ enum Size {
   XXXL
 }
 
-enum Gender {
+enum ValidCategory {
   men
   women
   kid
@@ -37,15 +37,15 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String        @id @default(uuid())
   title       String
   description String
   inStock     Int
-  price       Float    @default(0)
-  sizes       Size[]   @default([])
-  slug        String   @unique
-  tags        String[] @default([])
-  gender      Gender
+  price       Float         @default(0)
+  sizes       Size[]        @default([])
+  slug        String        @unique
+  tags        String[]      @default([])
+  gender      ValidCategory
 
   // Relaciones
 
