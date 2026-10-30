@@ -1,7 +1,8 @@
 export const revalidate = 604800; // 7 dias
 
-import { notFound } from "next/navigation";
+import { Metadata, ResolvingMetadata } from "next";
 
+import { notFound } from "next/navigation";
 import { titleFont } from "@/config/fonts";
 import {
  ProductMobileSlideshow,
@@ -16,7 +17,32 @@ interface Props {
  params: Promise<{ slug: string }>;
 }
 
-export default async function ({ params }: Props) {
+export async function generateMetadata(
+ { params }: Props,
+ parent: ResolvingMetadata
+): Promise<Metadata> {
+ // read route params
+ const { slug } = await params;
+
+ // fetch data
+ const product = await getProductBySlug(slug);
+
+ // optionally access and extend (rather than replace) parent metadata
+ // const previousImages = (await parent).openGraph?.images || []
+
+ return {
+  title: product?.title ?? "Producto no encontrado",
+  description: product?.description ?? "",
+  openGraph: {
+   title: product?.title ?? "Producto no encontrado",
+   description: product?.description ?? "",
+   // images: [], // https://misitioweb.com/products/image.png
+   images: [`/products/${product?.images[1]}`],
+  },
+ };
+}
+
+export default async function ProductBySlugPage({ params }: Props) {
  const { slug } = await params;
  const product = await getProductBySlug(slug);
 
