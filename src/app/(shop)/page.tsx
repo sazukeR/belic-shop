@@ -1,4 +1,3 @@
-// export const revalidate = 60; // 60 segundos
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 

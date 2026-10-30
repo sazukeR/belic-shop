@@ -1,8 +1,7 @@
 import { getPaginatedProductsWithImages } from "@/actions";
 import { Pagination, ProductGrid, Title } from "@/components";
-import { ValidCategory } from "@/interfaces";
 import { initialData } from "@/seed/seed";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { Gender } from "@prisma/client";
 
 const seedProducts = initialData.products;
