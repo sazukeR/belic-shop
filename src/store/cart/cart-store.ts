@@ -9,7 +9,7 @@ interface State {
 
  addProductToCart: (product: CartProduct) => void;
  updateProductQuantity: (product: CartProduct, quantity: number) => void;
- // removeProduct
+ removeProduct: (product: CartProduct) => void;
 }
 
 export const useCartStore = create<State>()(
@@ -57,7 +57,7 @@ export const useCartStore = create<State>()(
    updateProductQuantity: (product: CartProduct, quantity: number) => {
     const { cart } = get();
 
-    const updatedCartProduct = cart.map((item) => {
+    const updatedCartProducts = cart.map((item) => {
      if (item.id === product.id && item.size === product.size) {
       return {
        ...item,
@@ -68,7 +68,17 @@ export const useCartStore = create<State>()(
      return item;
     });
 
-    set({ cart: updatedCartProduct });
+    set({ cart: updatedCartProducts });
+   },
+
+   removeProduct: (product: CartProduct) => {
+    const { cart } = get();
+
+    const updatedCartProducts = cart.filter(
+     (item) => item.id !== product.id || item.size !== product.size
+    );
+
+    set({ cart: updatedCartProducts });
    },
   }),
 
