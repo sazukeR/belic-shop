@@ -4,14 +4,46 @@ import type { SubmitEvent } from "react";
 import { AuthDivider } from "../components/auth-divider";
 import { AuthField } from "../components/auth-field";
 import { SocialSignInButtons } from "../components/social-sign-in-buttons";
+import { authClient } from "@/lib/auth-client";
 
 export function LoginForm() {
- function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+ async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
   console.log("Login:", { email, password });
+
+  const { data, error } = await authClient.signIn.email(
+   {
+    email,
+    password,
+    callbackURL: "/",
+    rememberMe: false,
+   },
+   {
+    //callbacks
+
+    onRequest: () => {
+     console.log("Loading...");
+    },
+
+    onSuccess: () => {
+     console.log("Success...");
+    },
+    onError: async (ctx) => {
+     if (ctx.error.status === 403) {
+      alert("Email no ha sido verificado.");
+
+      await authClient.sendVerificationEmail({
+       email: email,
+       callbackURL: "/",
+      });
+      return;
+     }
+    },
+   }
+  );
  }
 
  return (
