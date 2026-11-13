@@ -27,7 +27,7 @@ export const Sidebar = () => {
   const { data, error } = await authClient.signOut();
   if (error) alert("Error al cerra sesión");
 
-  router.replace("/");
+  router.replace("/auth/login");
 
   // await authClient.signOut({
   //  fetchOptions: {
@@ -81,7 +81,8 @@ export const Sidebar = () => {
     {/* Menú */}
 
     <Link
-     href="/"
+     href="/profile"
+     onClick={() => closeMenu()}
      className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
     >
      <IoPersonOutline size={30} />
