@@ -16,6 +16,7 @@ import {
 
 import { useUIStore } from "@/store";
 import { authClient } from "@/lib/auth-client";
+import { BetterFetchError } from "better-auth/react";
 
 export const Sidebar = () => {
  const router = useRouter();
@@ -23,8 +24,19 @@ export const Sidebar = () => {
  const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
  const closeMenu = useUIStore((state) => state.closeSideMenu);
 
- const handleSignOut = async () => {
-  const { data, error } = await authClient.signOut();
+ const {
+  data: session,
+  isPending, //loading state
+  error, //error object
+  refetch, //refetch the session
+ } = authClient.useSession();
+
+ console.log(session?.user);
+
+ const isAuthenticated = !!session?.user;
+
+ const handleSignOut = async (error: BetterFetchError | null) => {
+  await authClient.signOut();
   if (error) alert("Error al cerra sesión");
 
   closeMenu();
@@ -98,21 +110,26 @@ export const Sidebar = () => {
      <span className="ml-3 text-xl">Ordenes</span>
     </Link>
 
-    <Link
-     href="/"
-     className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-    >
-     <IoLogInOutline size={30} />
-     <span className="ml-3 text-xl">Ingresar</span>
-    </Link>
+    {!isAuthenticated && (
+     <Link
+      href="/auth/login"
+      onClick={() => closeMenu()}
+      className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+     >
+      <IoLogInOutline size={30} />
+      <span className="ml-3 text-xl">Ingresar</span>
+     </Link>
+    )}
 
-    <button
-     onClick={handleSignOut}
-     className="flex items-center w-full mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-    >
-     <IoLogOutOutline size={30} />
-     <span className="ml-3 text-xl">Salir</span>
-    </button>
+    {isAuthenticated && (
+     <button
+      onClick={() => handleSignOut(error)}
+      className="flex items-center w-full mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+     >
+      <IoLogOutOutline size={30} />
+      <span className="ml-3 text-xl">Salir</span>
+     </button>
+    )}
 
     {/* Line Separator */}
     <div className="w-full h-px bg-gray-200 my-10" />
