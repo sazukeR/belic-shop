@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import {
  IoCloseOutline,
@@ -14,10 +15,28 @@ import {
 } from "react-icons/io5";
 
 import { useUIStore } from "@/store";
+import { authClient } from "@/lib/auth-client";
 
 export const Sidebar = () => {
+ const router = useRouter();
+
  const isSideMenuOpen = useUIStore((state) => state.isSideMenuOpen);
  const closeMenu = useUIStore((state) => state.closeSideMenu);
+
+ const handleSignOut = async () => {
+  const { data, error } = await authClient.signOut();
+  if (error) alert("Error al cerra sesión");
+
+  router.replace("/");
+
+  // await authClient.signOut({
+  //  fetchOptions: {
+  //   onSuccess: () => {
+  //    router.push("/"); // redirect to login page
+  //   },
+  //  },
+  // });
+ };
 
  return (
   <div>
@@ -85,13 +104,13 @@ export const Sidebar = () => {
      <span className="ml-3 text-xl">Ingresar</span>
     </Link>
 
-    <Link
-     href="/"
-     className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+    <button
+     onClick={handleSignOut}
+     className="flex items-center w-full mt-10 p-2 hover:bg-gray-100 rounded transition-all"
     >
      <IoLogOutOutline size={30} />
      <span className="ml-3 text-xl">Salir</span>
-    </Link>
+    </button>
 
     {/* Line Separator */}
     <div className="w-full h-px bg-gray-200 my-10" />
