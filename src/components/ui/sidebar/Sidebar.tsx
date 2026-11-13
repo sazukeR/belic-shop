@@ -27,7 +27,8 @@ export const Sidebar = () => {
   const { data, error } = await authClient.signOut();
   if (error) alert("Error al cerra sesión");
 
-  router.replace("/auth/login");
+  closeMenu();
+  router.replace("/");
 
   // await authClient.signOut({
   //  fetchOptions: {
