@@ -14,7 +14,7 @@ export default async function CheckoutLayout({
  // console.log({ session });
 
  if (!session?.user) {
-  redirect("/auth/login?redirectTo=/checkout/");
+  redirect("/auth/login?redirectTo=/checkout/address");
  }
 
  return <>{children}</>;
