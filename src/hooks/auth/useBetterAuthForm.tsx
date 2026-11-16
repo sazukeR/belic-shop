@@ -100,6 +100,13 @@ export const useBetterAuthForm = () => {
       });
       return;
      }
+
+     if (ctx.error.status === 400) {
+      setErrorMessage(
+       "Los datos enviados tienen un formato incorrecto o son inválidos"
+      );
+      return;
+     }
     },
    }
   );
