@@ -10,9 +10,4 @@
 6. Ejecutar seed `npm run seed`
 7. Correr el proyecto `npm run dev`
 
-### better auth
-
-npx auth@latest generate
-npx auth@latest migrate
-
 ## Correr en prod
