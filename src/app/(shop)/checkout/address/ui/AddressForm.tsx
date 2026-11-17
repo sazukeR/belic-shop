@@ -2,6 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 
 type FormInputs = {
@@ -21,18 +23,46 @@ interface Props {
 }
 
 export const AddressForm = ({ countries }: Props) => {
+ const [loaded, setLoaded] = useState(false);
+
  const {
   handleSubmit,
   register,
   formState: { isValid },
+  reset,
  } = useForm<FormInputs>({
   defaultValues: {
    // todo: leer de la base de datos
   },
  });
 
+ const setAddress = useAddressStore((state) => state.setAddress);
+ const address = useAddressStore((state) => state.address);
+
+ // estado para saber si se ha cargado el state desde el localstorage
+
+ // Esperamos a que se cargue la pagina para que el state este cargado
+ useEffect(() => {
+  setLoaded(true);
+ }, []);
+
+ // uso el store una vez que la pagina este cargada
+ useEffect(() => {
+  if (address.firstName) {
+   reset(address);
+  }
+ }, [address, loaded]);
+
+ // Si la pagina no esta cargada retorno Loading...
+ if (!loaded) {
+  return <p>Loading...</p>;
+ }
+
  const onSubmit = (data: FormInputs) => {
   console.log({ data });
+  console.log("first");
+
+  setAddress(data);
  };
 
  return (
@@ -93,14 +123,6 @@ export const AddressForm = ({ countries }: Props) => {
      {...register("city", { required: true })}
     />
    </div>
-   {/* 
-   <div className="flex flex-col mb-2">
-    <span>País</span>
-    <select className="p-2 border rounded-md bg-gray-200">
-     <option value="">[ Seleccione ]</option>
-     <option value="CRI">Costa Rica</option>
-    </select>
-   </div> */}
 
    <div className="flex flex-col mb-2">
     <span>País</span>
@@ -162,7 +184,7 @@ export const AddressForm = ({ countries }: Props) => {
     </div>
 
     <button
-     disabled={isValid}
+     disabled={!isValid}
      //href="/checkout"
      // className="btn-primary flex w-full sm:w-1/2 justify-center"
      className={clsx({
