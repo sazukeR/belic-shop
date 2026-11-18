@@ -5,7 +5,7 @@ import { Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
-import { setUserAddress } from "@/actions";
+import { deleteUserAddress, setUserAddress } from "@/actions";
 import { authClient } from "@/lib/auth-client";
 
 type FormInputs = {
@@ -63,6 +63,7 @@ export const AddressForm = ({ countries }: Props) => {
  }
 
  const onSubmit = (data: FormInputs) => {
+  console.log("pressed");
   setAddress(data);
 
   const { rememberAddress, ...restAddress } = data;
@@ -72,6 +73,8 @@ export const AddressForm = ({ countries }: Props) => {
    setUserAddress(restAddress, session!.user.id);
   } else {
    // todo: server action
+
+   deleteUserAddress(session!.user.id);
   }
  };
 
@@ -196,12 +199,12 @@ export const AddressForm = ({ countries }: Props) => {
     <button
      disabled={!isValid}
      //href="/checkout"
+     type="submit"
      // className="btn-primary flex w-full sm:w-1/2 justify-center"
      className={clsx({
       "btn-primary": isValid,
       "btn-disabled": !isValid,
      })}
-     type="submit"
     >
      Siguiente
     </button>
