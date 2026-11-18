@@ -1,4 +1,3 @@
-import { Address } from "cluster";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -12,7 +11,6 @@ interface State {
   city: string;
   country: string;
   phone: string;
-  rememberAddress?: boolean;
  };
 
  // methods
@@ -32,7 +30,6 @@ export const useAddressStore = create<State>()(
     city: "",
     country: "",
     phone: "",
-    rememberAddress: false,
    },
 
    setAddress: (address) => {

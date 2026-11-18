@@ -5,6 +5,8 @@ import { Country } from "@/interfaces";
 import { useAddressStore } from "@/store";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import { setUserAddress } from "@/actions";
+import { authClient } from "@/lib/auth-client";
 
 type FormInputs = {
  firstName: string;
@@ -36,6 +38,8 @@ export const AddressForm = ({ countries }: Props) => {
   },
  });
 
+ const { data: session } = authClient.useSession();
+
  const setAddress = useAddressStore((state) => state.setAddress);
  const address = useAddressStore((state) => state.address);
 
@@ -59,10 +63,16 @@ export const AddressForm = ({ countries }: Props) => {
  }
 
  const onSubmit = (data: FormInputs) => {
-  console.log({ data });
-  console.log("first");
-
   setAddress(data);
+
+  const { rememberAddress, ...restAddress } = data;
+
+  if (data.rememberAddress) {
+   // todo: server action
+   setUserAddress(restAddress, session!.user.id);
+  } else {
+   // todo: server action
+  }
  };
 
  return (
