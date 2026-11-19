@@ -31,7 +31,7 @@ export const Sidebar = () => {
   refetch, //refetch the session
  } = authClient.useSession();
 
- console.log(session?.user);
+ // console.log(session?.user);
 
  const isAuthenticated = !!session?.user;
  const isAdmin = session?.user.role === "admin";
