@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { placeOrder } from "@/actions";
 import { useAddressStore, useCartStore } from "@/store";
 import { currencyFormat } from "@/utils";
+import { useShallow } from "zustand/shallow";
 
 export const PlaceOrder = () => {
  const router = useRouter();
@@ -16,9 +17,14 @@ export const PlaceOrder = () => {
 
  const address = useAddressStore((state) => state.address);
 
- const { itemsInCart, subTotal, tax, total } = useCartStore((state) =>
-  state.getSummaryInformation()
+ // const { itemsInCart, subTotal, tax, total } = useCartStore((state) =>
+ //  state.getSummaryInformation()
+ // );
+
+ const { itemsInCart, subTotal, tax, total } = useCartStore(
+  useShallow((state) => state.getSummaryInformation())
  );
+
  const cart = useCartStore((state) => state.cart);
  const clearCart = useCartStore((state) => state.clearCart);
 
