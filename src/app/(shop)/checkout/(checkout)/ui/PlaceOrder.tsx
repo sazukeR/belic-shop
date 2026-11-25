@@ -42,7 +42,7 @@ export const PlaceOrder = () => {
    size: product.size,
   }));
 
-  //! Server Action
+  // //! Server Action
   const resp = await placeOrder(productsToOrder, address);
   if (!resp.ok) {
    setIsPlacingOrder(false);
@@ -50,9 +50,11 @@ export const PlaceOrder = () => {
    return;
   }
 
-  //* Todo salio bien!
+  // //* Todo salio bien!
   clearCart();
   router.replace("/orders/" + resp.order?.id);
+
+  setIsPlacingOrder(false);
  };
 
  if (!loaded) {
